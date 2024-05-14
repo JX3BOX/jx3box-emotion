@@ -27,6 +27,12 @@ async function loadEmotionList() {
     // 尝试从sessionStorage中获取其他页面的缓存
     const emotion = sessionStorage.getItem("jx3_emotion");
     if (emotion) {
+        const emotions = JSON.parse(emotion);
+        emotionList.push(
+            ...emotions
+                .map(item => item.items)
+                .reduce((a, b) => a.concat(b), [])
+        );
         emotionList.push(...JSON.parse(emotion));
     } else {
         const data = await fetch(
@@ -36,7 +42,7 @@ async function loadEmotionList() {
         emotionList.push(
             ...data.map(item => item.items).reduce((a, b) => a.concat(b), [])
         );
-        sessionStorage.setItem("jx3_emotion", JSON.stringify(emotionList));
+        sessionStorage.setItem("jx3_emotion", JSON.stringify(data));
     }
     // 通知等待队列里面的有数据了
     loading = false;
