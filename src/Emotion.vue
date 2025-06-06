@@ -315,6 +315,10 @@ export default {
         width: 32px;
         height: 32px;
 
+        img {
+            .size(20px);
+        }
+
         &:hover {
             border-color: #ccc;
         }
