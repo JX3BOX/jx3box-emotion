@@ -12,7 +12,7 @@ const $cms = options => {
             password: "cms common request",
         },
         baseURL:
-            VUE_APP_CMS_API ||
+            process.env.VUE_APP_CMS_API ||
             (process.env.NODE_ENV === "production" ? domain : "/"),
         headers: {},
     };
