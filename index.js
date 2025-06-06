@@ -68,7 +68,11 @@ class JX3_EMOTION {
         // 替换表情符号为img标签
         for (const key in emotionMap) {
             if (this.joke.includes(key)) {
-                const url = `${__imgPath}emotion/output/${emotionMap[key].filename}`;
+                let url = emotionMap[key].filename;
+                // http 开头的绝对地址，直接使用，否则拼接一下链接。
+                if (!url.startsWith("http")) {
+                    url = `${__imgPath}emotion/output/${emotionMap[key].filename}`;
+                } // 如果是外链表情，跳过
                 this.joke = this.joke.replaceAll(
                     key,
                     `<img src="${url}" alt="${key}" title="${key}" />`
