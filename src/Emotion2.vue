@@ -4,19 +4,16 @@
             <el-tab-pane
                 v-for="item in decorationEmotion"
                 :key="item.group_id"
-                :label="item.group_name"
-            >
+                :label="item.group_name">
                 <span
                     v-for="emotion in item.items"
                     :key="emotion.emotion_id"
                     class="c-jx3box-emotion-item"
-                    @click="handleEmotionClick(emotion)"
-                >
+                    @click="handleEmotionClick(emotion)">
                     <img
-                        :src="`${EmojiPath}${emotion.filename}`"
+                        :src="emotionLink(emotion.filename)"
                         :alt="emotion.key"
-                        :title="emotion.key"
-                    />
+                        :title="emotion.key" />
                 </span>
             </el-tab-pane>
         </el-tabs>
@@ -26,8 +23,7 @@
             trigger="click"
             :visible-arrow="false"
             popper-class="c-jx3box-emotion-pop"
-            ref="emotion"
-        >
+            ref="emotion">
             <div class="c-jx3box-emotion-pop__content">
                 <el-icon class="u-close" @click="closePop"><Close /></el-icon>
                 <div class="u-title">表情</div>
@@ -36,33 +32,28 @@
                     class="u-tabs"
                     type="card"
                     tab-position="bottom"
-                    size="small"
-                >
+                    size="small">
                     <el-tab-pane
                         v-for="item in decorationEmotion"
                         :key="item.group_id"
-                        :label="item.group_name"
-                    >
+                        :label="item.group_name">
                         <template #label>
                             <img
-                                :src="`${EmojiPath}${item.items[0].filename}`"
+                                :src="emotionLink(item.items[0].filename)"
                                 :alt="item.items[0].key"
                                 :title="item.group_name"
-                                class="u-tab-label"
-                            />
+                                class="u-tab-label" />
                         </template>
                         <div class="c-jx3box-emotion-list">
                             <span
                                 v-for="emotion in item.items"
                                 :key="emotion.emotion_id"
                                 class="c-jx3box-emotion-item"
-                                @click="handleEmotionClick(emotion)"
-                            >
+                                @click="handleEmotionClick(emotion)">
                                 <img
-                                    :src="`${EmojiPath}${emotion.filename}`"
+                                    :src="emotionLink(emotion.filename)"
                                     :alt="emotion.key"
-                                    :title="emotion.key"
-                                />
+                                    :title="emotion.key" />
                             </span>
                         </div>
                     </el-tab-pane>
@@ -75,8 +66,7 @@
                     width="24"
                     height="24"
                     src="../data/img/emotion.svg"
-                    alt=""
-                />
+                    alt="" />
             </template>
         </el-popover>
     </div>
@@ -116,14 +106,12 @@ export default {
     computed: {
         decorationEmotion({ emotionList, decoration }) {
             // 默认表情
-            const defaultEmo = emotionList.filter(
-                (item) => item.group_id === 0
-            );
+            const defaultEmo = emotionList.filter(item => item.group_id === 0);
             if (decoration.length === 0) {
                 return defaultEmo;
             } else {
                 // 购买的表情
-                const arr = emotionList.filter((item) =>
+                const arr = emotionList.filter(item =>
                     decoration.includes(item.group_name)
                 );
                 // 截取4个
@@ -140,6 +128,13 @@ export default {
             this.$emit("selected", emotion);
             this.closePop();
         },
+        emotionLink(filename) {
+            if (!filename) return "";
+            if (filename.startsWith("http")) {
+                return filename;
+            }
+            return `${this.EmojiPath}${filename}`;
+        },
         // 获取全部表情
         loadEmotionList() {
             try {
@@ -149,8 +144,8 @@ export default {
                     return;
                 } else {
                     fetch(`${__dataPath}emotion/output/catalog.json`)
-                        .then((response) => response.json())
-                        .then((data) => {
+                        .then(response => response.json())
+                        .then(data => {
                             this.emotionList = data;
                             sessionStorage.setItem(
                                 "jx3_emotion",
@@ -160,8 +155,8 @@ export default {
                 }
             } catch (e) {
                 fetch(`${__dataPath}emotion/output/catalog.json`)
-                    .then((response) => response.json())
-                    .then((data) => {
+                    .then(response => response.json())
+                    .then(data => {
                         this.emotionList = data;
                         sessionStorage.setItem(
                             "jx3_emotion",
@@ -181,8 +176,8 @@ export default {
                         // uid: 8719
                     },
                 })
-                .then((res) => {
-                    this.decoration = res.data?.data?.map((item) => item?.val);
+                .then(res => {
+                    this.decoration = res.data?.data?.map(item => item?.val);
                 });
         },
 

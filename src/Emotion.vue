@@ -13,7 +13,7 @@
                     @click="handleEmotionClick(emotion)"
                 >
                     <img
-                        :src="`${EmojiPath}${emotion.filename}`"
+                        :src="emotionLink(emotion.filename)"
                         :alt="emotion.key"
                         :title="emotion.key"
                     />
@@ -45,7 +45,7 @@
                     >
                         <template #label>
                             <img
-                                :src="`${EmojiPath}${item.items[0].filename}`"
+                                :src="emotionLink(item.items[0].filename)"
                                 :alt="item.items[0].key"
                                 :title="item.group_name"
                                 class="u-tab-label"
@@ -59,7 +59,7 @@
                                 @click="handleEmotionClick(emotion)"
                             >
                                 <img
-                                    :src="`${EmojiPath}${emotion.filename}`"
+                                    :src="emotionLink(emotion.filename)"
                                     :alt="emotion.key"
                                     :title="emotion.key"
                                 />
@@ -129,6 +129,13 @@ export default {
         },
     },
     methods: {
+        emotionLink(filename) {
+            if (!filename) return "";
+            if (filename.startsWith("http")) {
+                return filename;
+            }
+            return `${this.EmojiPath}${filename}`;
+        },
         /**
          * 点击表情触发事件
          * @param {Object} emotion 表情对象
