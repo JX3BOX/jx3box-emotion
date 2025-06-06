@@ -223,6 +223,10 @@ export default {
         cursor: pointer;
         width: 20px;
 
+        img {
+            .size(20px);
+        }
+
         &:hover {
             border-color: #ccc;
         }
