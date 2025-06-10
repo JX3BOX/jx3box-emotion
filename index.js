@@ -58,7 +58,14 @@ class JX3_EMOTION {
         this.joke = String(joke).trim();
     }
 
-    async _renderHTML() {
+    /**
+     *
+     * @param {Object} options
+     * @param {number} options.maxWidth 最大宽度
+     * @param {number} options.maxHeight 最大高度
+     * @returns
+     */
+    async _renderHTML(options) {
         // 没有表情符号直接返回
         if (!this.joke.includes("#")) return this.joke;
 
@@ -73,9 +80,14 @@ class JX3_EMOTION {
                 if (!url.startsWith("http")) {
                     url = `${__imgPath}emotion/output/${emotionMap[key].filename}`;
                 } // 如果是外链表情，跳过
+                let styles = "";
+                const { maxWidth = 60, maxHeight = 60 } = options || {};
+                styles += `max-width: ${maxWidth}px;`;
+                styles += `max-height: ${maxHeight}px;`;
+
                 this.joke = this.joke.replaceAll(
                     key,
-                    `<img src="${url}" alt="${key}" title="${key}" />`
+                    `<img src="${url}" alt="${key}" title="${key}" style="${styles}" />`
                 );
             }
         }
