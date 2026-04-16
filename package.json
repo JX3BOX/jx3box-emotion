@@ -5,7 +5,7 @@
     "main": "index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jx3box/jx3box-emotion.git"
+        "url": "git+https://github.com/JX3BOX/jx3box-emotion.git"
     },
     "dependencies": {
         "@jx3box/jx3box-common": "^9.0.8",
