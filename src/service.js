@@ -2,6 +2,9 @@ import axios from "axios";
 import JX3BOX from "@jx3box/jx3box-common/data/jx3box.json";
 const { __cms } = JX3BOX;
 
+let emotionDecorationRequest = null;
+let emotionDecorationToken = null;
+
 const $cms = options => {
     const domain = (options && options.domain) || __cms;
     let config = {
@@ -23,4 +26,32 @@ const $cms = options => {
     return ins;
 };
 
-export { $cms };
+const getEmotionDecorations = () => {
+    const token =
+        (typeof localStorage !== "undefined" && localStorage.getItem("token")) ||
+        "";
+
+    if (!emotionDecorationRequest || emotionDecorationToken !== token) {
+        emotionDecorationToken = token;
+        const request = $cms()
+            .get(`/api/cms/user/decoration`, {
+                params: {
+                    type: "emotion",
+                    using: 1,
+                },
+            })
+            .then(res => res.data?.data?.map(item => item?.val) || [])
+            .catch(error => {
+                if (emotionDecorationRequest === request) {
+                    emotionDecorationRequest = null;
+                    emotionDecorationToken = null;
+                }
+                throw error;
+            });
+        emotionDecorationRequest = request;
+    }
+
+    return emotionDecorationRequest;
+};
+
+export { $cms, getEmotionDecorations };

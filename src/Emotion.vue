@@ -82,7 +82,7 @@
 
 <script>
 import JX3BOX from "@jx3box/jx3box-common/data/jx3box.json";
-import { $cms } from "./service";
+import { getEmotionDecorations } from "./service";
 import User from "@jx3box/jx3box-common/js/user.js";
 const { __imgPath, __dataPath } = JX3BOX;
 export default {
@@ -177,17 +177,9 @@ export default {
         // 获取虚拟资产
         loadDecoration() {
             if (!User.isLogin()) return;
-            $cms()
-                .get(`/api/cms/user/decoration`, {
-                    params: {
-                        type: "emotion",
-                        using: 1,
-                        // uid: 8719
-                    },
-                })
-                .then((res) => {
-                    this.decoration = res.data?.data?.map((item) => item?.val);
-                });
+            getEmotionDecorations().then((decoration) => {
+                this.decoration = decoration;
+            });
         },
 
         // 关闭弹窗
